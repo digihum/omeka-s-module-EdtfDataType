@@ -1,8 +1,8 @@
 <?php
-namespace NumericDataTypes\DataType;
+namespace EdtfDataType\DataType;
 
 use Doctrine\ORM\QueryBuilder;
-use NumericDataTypes\Entity\NumericDataTypesNumber;
+use EdtfDataType\Entity\EdtfDataType;
 use Omeka\Api\Adapter\AdapterInterface;
 use Omeka\Entity\Value;
 
@@ -18,13 +18,13 @@ interface DataTypeInterface
     /**
      * Set the number value(s) to a number entity.
      *
-     * @param NumericDataTypesNumber $entity
+     * @param EdtfDataType $entity
      * @param Value $value
      */
-    public function setEntityValues(NumericDataTypesNumber $entity, Value $value);
+    public function setEntityValues(EdtfDataType $entity, Value $value);
 
     /**
-     * Build a numeric query.
+     * Build an EDTF query.
      *
      * @param AdapterInterface $adapter
      * @param QueryBuilder $qb
@@ -33,7 +33,7 @@ interface DataTypeInterface
     public function buildQuery(AdapterInterface $adapter, QueryBuilder $qb, array $query);
 
     /**
-     * Sort a numeric query.
+     * Sort an EDTF query.
      *
      * @param AdapterInterface $adapter
      * @param QueryBuilder $qb

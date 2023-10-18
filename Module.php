@@ -1,16 +1,23 @@
 <?php
-namespace NumericDataTypes;
+namespace EdtfDataType;
 
 use Composer\Semver\Comparator;
 use Doctrine\Common\Collections\Criteria;
-use NumericDataTypes\Form\Element\ConvertToNumeric;
+use EdtfDataType\Form\Element\ConvertToEttf;
 use Omeka\Module\AbstractModule;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\ModuleManager\ModuleManager;
 
 class Module extends AbstractModule
 {
+
+    public function init(ModuleManager $moduleManager): void
+    {
+        require_once __DIR__ . '/vendor/autoload.php';
+    }
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -19,44 +26,18 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $services)
     {
         $conn = $services->get('Omeka\Connection');
-        $conn->exec('CREATE TABLE numeric_data_types_duration (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, INDEX IDX_E1B5FC6089329D25 (resource_id), INDEX IDX_E1B5FC60549213EC (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('CREATE TABLE numeric_data_types_integer (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, INDEX IDX_6D39C79089329D25 (resource_id), INDEX IDX_6D39C790549213EC (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('CREATE TABLE numeric_data_types_timestamp (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, INDEX IDX_7367AFAA89329D25 (resource_id), INDEX IDX_7367AFAA549213EC (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('CREATE TABLE numeric_data_types_interval (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, value2 BIGINT NOT NULL, INDEX IDX_7E2C936B89329D25 (resource_id), INDEX IDX_7E2C936B549213EC (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('ALTER TABLE numeric_data_types_duration ADD CONSTRAINT FK_E1B5FC6089329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE numeric_data_types_duration ADD CONSTRAINT FK_E1B5FC60549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE numeric_data_types_integer ADD CONSTRAINT FK_6D39C79089329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE numeric_data_types_integer ADD CONSTRAINT FK_6D39C790549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE numeric_data_types_timestamp ADD CONSTRAINT FK_7367AFAA89329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE numeric_data_types_timestamp ADD CONSTRAINT FK_7367AFAA549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE numeric_data_types_interval ADD CONSTRAINT FK_7E2C936B89329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE numeric_data_types_interval ADD CONSTRAINT FK_7E2C936B549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
+        $conn->exec('CREATE TABLE edtf_data_type (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, INDEX IDX_7367AFAA12345678 (resource_id), INDEX IDX_7367AFAA98765432 (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
+
+        $conn->exec('ALTER TABLE edtf_data_type ADD CONSTRAINT FK_7367AFAA12345678 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;'); //new generated constraint
+        #$conn->exec('ALTER TABLE edtf_data_type_timestamp ADD CONSTRAINT FK_7367AFAA89329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
+        $conn->exec('ALTER TABLE edtf_data_type ADD CONSTRAINT FK_7367AFAA98765432 FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
+        #$conn->exec('ALTER TABLE edtf_data_type_timestamp ADD CONSTRAINT FK_7367AFAA549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
     }
 
     public function uninstall(ServiceLocatorInterface $services)
     {
         $conn = $services->get('Omeka\Connection');
-        $conn->exec('DROP TABLE IF EXISTS numeric_data_types_duration;');
-        $conn->exec('DROP TABLE IF EXISTS numeric_data_types_integer;');
-        $conn->exec('DROP TABLE IF EXISTS numeric_data_types_timestamp;');
-        $conn->exec('DROP TABLE IF EXISTS numeric_data_types_interval;');
-    }
-
-    public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $services)
-    {
-        $conn = $services->get('Omeka\Connection');
-        if (Comparator::lessThan($oldVersion, '1.1.0-alpha')) {
-            $conn->exec('CREATE TABLE numeric_data_types_interval (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, value2 BIGINT NOT NULL, INDEX IDX_7E2C936B89329D25 (resource_id), INDEX IDX_7E2C936B549213EC (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-            $conn->exec('ALTER TABLE numeric_data_types_interval ADD CONSTRAINT FK_7E2C936B89329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
-            $conn->exec('ALTER TABLE numeric_data_types_interval ADD CONSTRAINT FK_7E2C936B549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
-        }
-        if (Comparator::lessThan($oldVersion, '1.2.0')) {
-            // The numeric_data_types_duration table was mistakenly not created
-            // in the previous upgrade. Create it now.
-            $conn->exec('CREATE TABLE numeric_data_types_duration (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, INDEX IDX_E1B5FC6089329D25 (resource_id), INDEX IDX_E1B5FC60549213EC (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-            $conn->exec('ALTER TABLE numeric_data_types_duration ADD CONSTRAINT FK_E1B5FC6089329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
-            $conn->exec('ALTER TABLE numeric_data_types_duration ADD CONSTRAINT FK_E1B5FC60549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
-        }
+        $conn->exec('DROP TABLE IF EXISTS edtf_data_type;');
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -74,13 +55,13 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.hydrate.post',
-            [$this, 'convertToNumeric'],
-            100 // Set a high priority so this runs before saveNumericData().
+            [$this, 'convertToEdtf'],
+            100 // Set a high priority so this runs before saveEdtfData().
         );
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.hydrate.post',
-            [$this, 'saveNumericData']
+            [$this, 'saveEdtfData']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
@@ -97,7 +78,7 @@ class Module extends AbstractModule
             'view.advanced_search',
             function (Event $event) {
                 $partials = $event->getParam('partials');
-                $partials[] = 'common/numeric-data-types-advanced-search';
+                $partials[] = 'common/edtf-data-type-advanced-search';
                 $event->setParam('partials', $partials);
             }
         );
@@ -106,7 +87,7 @@ class Module extends AbstractModule
             'view.advanced_search',
             function (Event $event) {
                 $partials = $event->getParam('partials');
-                $partials[] = 'common/numeric-data-types-advanced-search';
+                $partials[] = 'common/edtf-data-type-advanced-search';
                 $event->setParam('partials', $partials);
             }
         );
@@ -116,8 +97,8 @@ class Module extends AbstractModule
             function (Event $event) {
                 $form = $event->getTarget();
                 $form->add([
-                    'type' => ConvertToNumeric::class,
-                    'name' => 'numeric_convert',
+                    'type' => ConvertToEttf::class,
+                    'name' => 'edtf_convert',
                 ]);
             }
         );
@@ -127,8 +108,8 @@ class Module extends AbstractModule
             function (Event $event) {
                 $data = $event->getParam('data');
                 $rawData = $event->getParam('request')->getContent();
-                if ($this->convertToNumericDataIsValid($rawData)) {
-                    $data['numeric_convert'] = $rawData['numeric_convert'];
+                if ($this->convertToEdtfDataIsValid($rawData)) {
+                    $data['edtf_convert'] = $rawData['edtf_convert'];
                 }
                 $event->setParam('data', $data);
             }
@@ -136,13 +117,13 @@ class Module extends AbstractModule
     }
 
     /**
-     * Convert property values to the specified numeric data type.
+     * Convert property values to the specified edtf data type.
      *
      * This will work for Item, ItemSet, and Media resources.
      *
      * @param Event $event
      */
-    public function convertToNumeric(Event $event)
+    public function convertToEdtf(Event $event)
     {
         $entity = $event->getParam('entity');
         if ($entity instanceof \Omeka\Entity\Item) {
@@ -156,12 +137,12 @@ class Module extends AbstractModule
         }
 
         $data = $event->getParam('request')->getContent();
-        if (!$this->convertToNumericDataIsValid($data)) {
-            return; // This is not a convert-to-numeric request.
+        if (!$this->convertToEdtfDataIsValid($data)) {
+            return; // This is not a convert-to-edtf request.
         }
 
-        $propertyId = (int) $data['numeric_convert']['property'];
-        $type = $data['numeric_convert']['type'];
+        $propertyId = (int) $data['edtf_convert']['property'];
+        $type = $data['edtf_convert']['type'];
 
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
@@ -190,7 +171,7 @@ class Module extends AbstractModule
                 $dataType->hydrate($valueObject, $value, $adapter);
             } else {
                 $message = sprintf(
-                    'NumericDataTypes - invalid %s value for ID %s - %s', // @translate
+                    'EdtfDataType - invalid %s value for ID %s - %s', // @translate
                     $type, $entity->getId(), $value->getValue()
                 );
                 $logger->notice($message);
@@ -199,7 +180,7 @@ class Module extends AbstractModule
     }
 
     /**
-     * Save numeric data to the corresponding number tables.
+     * Save edtf data to the corresponding number tables.
      *
      * This clears all existing numbers and (re)saves them during create and
      * update operations for a resource (item, item set, media). We do this as
@@ -210,19 +191,25 @@ class Module extends AbstractModule
      *
      * @param Event $event
      */
-    public function saveNumericData(Event $event)
+    public function saveEdtfData(Event $event)
     {
+ 
         $entity = $event->getParam('entity');
+        
         if (!$entity instanceof \Omeka\Entity\Resource) {
             return; // This is not a resource entity.
         }
 
         $allValues = $entity->getValues();
-        foreach ($this->getNumericDataTypes() as $dataTypeName => $dataType) {
+
+
+        foreach ($this->getEdtfDataType() as $dataTypeName => $dataType) {
             $criteria = Criteria::create()
                 ->where(Criteria::expr()
                 ->eq('type', $dataTypeName));
+            
             $matchingValues = $allValues->matching($criteria);
+
             if (!$matchingValues) {
                 // This resource has no number values of this type.
                 continue;
@@ -236,6 +223,7 @@ class Module extends AbstractModule
                     'SELECT n FROM %s n WHERE n.resource = :resource',
                     $dataType->getEntityClass()
                 );
+                echo($dql);
                 $query = $em->createQuery($dql);
                 $query->setParameter('resource', $entity);
                 $existingNumbers = $query->getResult();
@@ -268,27 +256,27 @@ class Module extends AbstractModule
     }
 
     /**
-     * Build numerical queries.
+     * Build edtf queries.
      *
      * @param Event $event
      */
     public function buildQueries(Event $event)
     {
         $query = $event->getParam('request')->getContent();
-        if (!isset($query['numeric'])) {
+        if (!isset($query['edtf'])) {
             return;
         }
         $adapter = $event->getTarget();
         $qb = $event->getParam('queryBuilder');
-        foreach ($this->getNumericDataTypes() as $dataType) {
+        foreach ($this->getEdtfDataType() as $dataType) {
             $dataType->buildQuery($adapter, $qb, $query);
         }
     }
 
     /**
-     * Sort numerical queries.
+     * Sort edtfal queries.
      *
-     * sort_by=numeric:<type>:<propertyId>
+     * sort_by=edtf:<type>:<propertyId>
      *
      * @param Event $event
      */
@@ -306,16 +294,16 @@ class Module extends AbstractModule
             return;
         }
         [$namespace, $type, $propertyId] = $sortBy;
-        if ('numeric' !== $namespace || !is_string($type) || !is_numeric($propertyId)) {
+        if ('edtf' !== $namespace || !is_string($type) || !is_edtf($propertyId)) {
             return;
         }
-        foreach ($this->getNumericDataTypes() as $dataType) {
+        foreach ($this->getEdtfDataType() as $dataType) {
             $dataType->sortQuery($adapter, $qb, $query, $type, $propertyId);
         }
     }
 
     /**
-     * Add numeric sort options to sort by form.
+     * Add edtf sort options to sort by form.
      *
      * @param Event $event
      */
@@ -332,57 +320,56 @@ class Module extends AbstractModule
         $qb->andWhere($qb->expr()->isNotNull('rtp.dataType'));
         $query = $qb->getQuery();
 
-        $numericDataTypes = $this->getNumericDataTypes();
-        $numericSortBy = [];
+        $edtfDataType = $this->getEdtfDataType();
+        $edtfSortBy = [];
         foreach ($query->getResult() as $templatePropertyData) {
-            $dataTypes = $templatePropertyData['dataType'] ?? [];
-            foreach ($dataTypes as $dataType) {
-                if (isset($numericDataTypes[$dataType])) {
+            $dataType = $templatePropertyData['dataType'] ?? [];
+            foreach ($dataType as $dataType) {
+                if (isset($edtfDataType[$dataType])) {
                     $value = sprintf('%s:%s', $dataType, $templatePropertyData['id']);
-                    if (!isset($numericSortBy[$value])) {
-                        $numericSortBy[$value] = sprintf('%s (%s)', $translator->translate($templatePropertyData['label']), $dataType);
+                    if (!isset($edtfSortBy[$value])) {
+                        $edtfSortBy[$value] = sprintf('%s (%s)', $translator->translate($templatePropertyData['label']), $dataType);
                     }
                 }
             }
         }
         // Sort options alphabetically.
-        asort($numericSortBy);
+        asort($edtfSortBy);
         $sortConfig = $event->getParam('sortConfig') ?: [];
-        $sortConfig = array_merge($sortConfig, $numericSortBy);
+        $sortConfig = array_merge($sortConfig, $edtfSortBy);
         $event->setParam('sortConfig', $sortConfig);
     }
 
     /**
-     * Get all data types added by this module.
+     * Get all data type added by this module.
+     * @todo look at whether this can be done simpler as there is only one
      *
      * @return array
      */
-    public function getNumericDataTypes()
+    public function getEdtfDataType()
     {
-        $dataTypes = $this->getServiceLocator()->get('Omeka\DataTypeManager');
-        $numericDataTypes = [];
-        foreach ($dataTypes->getRegisteredNames() as $dataType) {
-            if (0 === strpos($dataType, 'numeric:')) {
-                $numericDataTypes[$dataType] = $dataTypes->get($dataType);
-            }
-        }
-        return $numericDataTypes;
+
+        $dataType = $this->getServiceLocator()->get('Omeka\DataTypeManager');
+        $edtfDataType = [];
+        $edtfDataType["edtf"] = $dataType->get("edtf");
+        
+        return $edtfDataType;
     }
 
     /**
-     * Does the passed data contain valid convert-to-numeric data?
+     * Does the passed data contain valid convert-to-edtf data?
      *
      * @param array $data
      * return bool
      */
-    public function convertToNumericDataIsValid(array $data)
+    public function convertToEdtfDataIsValid(array $data)
     {
-        $validTypes = array_keys($this->getNumericDataTypes());
+        $validType = array_keys($this->getEdtfDataType());
         return (
-            isset($data['numeric_convert']['property'])
-            && is_numeric($data['numeric_convert']['property'])
-            && isset($data['numeric_convert']['type'])
-            && in_array($data['numeric_convert']['type'], $validTypes)
+            isset($data['edtf_convert']['property'])
+            && is_edtf($data['edtf_convert']['property'])
+            && isset($data['edtf_convert']['type'])
+            && in_array($data['edtf_convert']['type'], $validType)
         );
     }
 }

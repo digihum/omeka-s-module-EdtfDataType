@@ -1,5 +1,5 @@
 <?php
-namespace NumericDataTypes\Controller\SiteAdmin\FacetedBrowse;
+namespace EdtfDataType\Controller\SiteAdmin\FacetedBrowse;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\ServiceManager\ServiceManager;
@@ -14,7 +14,7 @@ class IndexController extends AbstractActionController
         $this->services = $services;
     }
 
-    public function timestampValuesAction()
+    public function edtfValuesAction()
     {
         $dql = '
         SELECT v.value label, COUNT(v.value) has_count
@@ -24,48 +24,7 @@ class IndexController extends AbstractActionController
         AND v.resource IN (:ids)
         GROUP BY label
         ORDER BY label ASC';
-        return $this->getShowAllTable('numeric:timestamp', $dql);
-    }
-
-    public function durationValuesAction()
-    {
-        $dql = '
-        SELECT v.value label, COUNT(v.value) has_count
-        FROM Omeka\Entity\Value v
-        WHERE v.type = :type
-        AND v.property = :propertyId
-        AND v.resource IN (:ids)
-        GROUP BY label
-        ORDER BY label ASC';
-        return $this->getShowAllTable('numeric:duration', $dql);
-    }
-
-    public function intervalValuesAction()
-    {
-        $dql = '
-        SELECT v.value label, COUNT(v.value) has_count
-        FROM Omeka\Entity\Value v
-        WHERE v.type = :type
-        AND v.property = :propertyId
-        AND v.resource IN (:ids)
-        GROUP BY label
-        ORDER BY label ASC';
-        return $this->getShowAllTable('numeric:interval', $dql);
-    }
-
-    public function integerValuesAction()
-    {
-        // For ordering to work, we must cast string values to int by forcing a
-        // cast using + 0.
-        $dql = '
-        SELECT v.value + 0 label, COUNT(v.value) has_count
-        FROM Omeka\Entity\Value v
-        WHERE v.type = :type
-        AND v.property = :propertyId
-        AND v.resource IN (:ids)
-        GROUP BY label
-        ORDER BY label ASC';
-        return $this->getShowAllTable('numeric:integer', $dql);
+        return $this->getShowAllTable('edtf', $dql);
     }
 
     protected function getShowAllTable($dataType, $dql)

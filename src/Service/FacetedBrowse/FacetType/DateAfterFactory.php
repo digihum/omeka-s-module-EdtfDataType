@@ -1,7 +1,7 @@
 <?php
-namespace NumericDataTypes\Service\FacetedBrowse\FacetType;
+namespace EdtfDataType\Service\FacetedBrowse\FacetType;
 
-use NumericDataTypes\FacetedBrowse\FacetType\DateAfter;
+use EdtfDataType\FacetedBrowse\FacetType\DateAfter;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 

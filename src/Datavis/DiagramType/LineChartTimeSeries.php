@@ -1,5 +1,5 @@
 <?php
-namespace NumericDataTypes\Datavis\DiagramType;
+namespace EdtfDataType\Datavis\DiagramType;
 
 use Datavis\DiagramType\DiagramTypeInterface;
 use Laminas\Form\Element;

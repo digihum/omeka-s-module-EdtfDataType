@@ -1,0 +1,17 @@
+<?php
+$this->headLink()->appendStylesheet($this->assetUrl('css/edtf-data-type.css', 'EdtfDataType'));
+$this->headScript()->appendFile($this->assetUrl('js/edtf-data-type.js', 'EdtfDataType'));
+$formText = clone($this->plugin('formText'));
+$formText->addTranslatableAttribute('aria-label');
+?>
+<div class="edtf">
+    <div class="error invalid-value"
+        data-invalid-message="<?php echo $this->escapeHtml($this->translate('Invalid value: %s')); ?>"
+        data-custom-validity="<?php echo $this->escapeHtml($this->translate('Value must be an EDTF datetime')); ?>">
+    </div>
+    <div class="edtf-datetime-inputs">
+        <div class="edtf-inputs">
+            <?php echo $formText($element->getValueElement()); ?>
+        </div>
+    </div>
+</div>

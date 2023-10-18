@@ -1,12 +1,12 @@
 <?php
-namespace NumericDataTypes\FacetedBrowse\FacetType;
+namespace EdtfDataType\FacetedBrowse\FacetType;
 
 use FacetedBrowse\Api\Representation\FacetedBrowseFacetRepresentation;
 use FacetedBrowse\FacetType\FacetTypeInterface;
 use Laminas\Form\Element as LaminasElement;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
-use NumericDataTypes\Form\Element\NumericPropertySelect;
+use EdtfDataType\Form\Element\EdtfPropertySelect;
 
 class ValueLessThan implements FacetTypeInterface
 {
@@ -34,13 +34,13 @@ class ValueLessThan implements FacetTypeInterface
 
     public function prepareDataForm(PhpRenderer $view) : void
     {
-        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-data-form/value-less-than.js', 'NumericDataTypes'));
+        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-data-form/value-less-than.js', 'EdtfDataType'));
     }
 
     public function renderDataForm(PhpRenderer $view, array $data) : string
     {
         // Property ID
-        $propertyId = $this->formElements->get(NumericPropertySelect::class);
+        $propertyId = $this->formElements->get(EdtfPropertySelect::class);
         $propertyId->setName('property_id');
         $propertyId->setOptions([
             'label' => 'Property', // @translate
@@ -93,7 +93,7 @@ class ValueLessThan implements FacetTypeInterface
 
     public function prepareFacet(PhpRenderer $view) : void
     {
-        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-render/value-less-than.js', 'NumericDataTypes'));
+        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-render/value-less-than.js', 'EdtfDataType'));
     }
 
     public function renderFacet(PhpRenderer $view, FacetedBrowseFacetRepresentation $facet) : string

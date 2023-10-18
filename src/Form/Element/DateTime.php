@@ -1,8 +1,10 @@
 <?php
-namespace NumericDataTypes\Form\Element;
+namespace EdtfDataType\Form\Element;
 
-use NumericDataTypes\DataType\Timestamp as TimestampDataType;
+use EdtfDataType\DataType\Edtf as EdtfDataType;
 use Laminas\Form\Element;
+
+# @todo... i think this is where some of the handling for EDTF needs to come in...
 
 class DateTime extends Element
 {
@@ -20,43 +22,43 @@ class DateTime extends Element
         parent::__construct($name, $options);
 
         $this->valueElement = (new Element\Hidden($name))
-            ->setAttribute('class', 'numeric-datetime-value to-require');
+            ->setAttribute('class', 'edtf-datetime-value to-require');
         $this->yearElement = (new Element\Number('year'))
             ->setAttributes([
-                'class' => 'numeric-datetime-year',
+                'class' => 'edtf-datetime-year',
                 'step' => 1,
-                'min' => TimestampDataType::YEAR_MIN,
-                'max' => TimestampDataType::YEAR_MAX,
+                'min' => EdtfDataType::YEAR_MIN,
+                'max' => EdtfDataType::YEAR_MAX,
                 'placeholder' => 'Year', // @translate
                 'aria-label' => 'Year', // @translate
             ]);
         $this->monthElement = (new Element\Select('month'))
-            ->setAttribute('class', 'numeric-datetime-month')
+            ->setAttribute('class', 'edtf-datetime-month')
             ->setEmptyOption('Month') // @translate
             ->setAttribute('aria-label', 'Month') // @translate
             ->setValueOptions($this->getMonthValueOptions());
         $this->dayElement = (new Element\Select('day'))
-            ->setAttribute('class', 'numeric-datetime-day')
+            ->setAttribute('class', 'edtf-datetime-day')
             ->setEmptyOption('Day') // @translate
             ->setAttribute('aria-label', 'Day') // @translate
             ->setValueOptions($this->getDayValueOptions());
         $this->hourElement = (new Element\Select('hour'))
-            ->setAttribute('class', 'numeric-datetime-hour')
+            ->setAttribute('class', 'edtf-datetime-hour')
             ->setEmptyOption('Hour') // @translate
             ->setAttribute('aria-label', 'Hour') // @translate
             ->setValueOptions($this->getHourValueOptions());
         $this->minuteElement = (new Element\Select('minute'))
-            ->setAttribute('class', 'numeric-datetime-minute')
+            ->setAttribute('class', 'edtf-datetime-minute')
             ->setEmptyOption('Minute') // @translate
             ->setAttribute('aria-label', 'Minute') // @translate
             ->setValueOptions($this->getMinuteSecondValueOptions());
         $this->secondElement = (new Element\Select('second'))
-            ->setAttribute('class', 'numeric-datetime-second')
+            ->setAttribute('class', 'edtf-datetime-second')
             ->setEmptyOption('Second') // @translate
             ->setAttribute('aria-label', 'Second') // @translate
             ->setValueOptions($this->getMinuteSecondValueOptions());
         $this->offsetElement = (new Element\Select('offset'))
-            ->setAttribute('class', 'numeric-datetime-offset')
+            ->setAttribute('class', 'edtf-datetime-offset')
             ->setEmptyOption('Offset') // @translate
             ->setAttribute('aria-label', 'Offset') // @translate
             ->setValueOptions($this->getOffsetValueOptions());

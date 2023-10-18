@@ -1,8 +1,8 @@
-# Numeric Data Types
+# Edtf Data Types
 
 # Copyright
 
-NumericDataTypes is Copyright © 2018-present Corporation for Digital Scholarship, Vienna, Virginia, USA http://digitalscholar.org
+EdtfDataType is Copyright © 2018-present Corporation for Digital Scholarship, Vienna, Virginia, USA http://digitalscholar.org
 
 The Corporation for Digital Scholarship distributes the Omeka source code
 under the GNU General Public License, version 3 (GPLv3). The full text

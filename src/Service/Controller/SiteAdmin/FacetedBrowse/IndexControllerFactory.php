@@ -1,7 +1,7 @@
 <?php
-namespace NumericDataTypes\Service\Controller\SiteAdmin\FacetedBrowse;
+namespace EdtfDataType\Service\Controller\SiteAdmin\FacetedBrowse;
 
-use NumericDataTypes\Controller\SiteAdmin\FacetedBrowse\IndexController;
+use EdtfDataType\Controller\SiteAdmin\FacetedBrowse\IndexController;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Interop\Container\ContainerInterface;
 

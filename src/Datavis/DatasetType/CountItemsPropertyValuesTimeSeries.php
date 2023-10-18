@@ -1,5 +1,5 @@
 <?php
-namespace NumericDataTypes\Datavis\DatasetType;
+namespace EdtfDataType\Datavis\DatasetType;
 
 use Datavis\Api\Representation\DatavisVisRepresentation;
 use Datavis\DatasetType\AbstractDatasetType;
@@ -180,7 +180,7 @@ class CountItemsPropertyValuesTimeSeries extends AbstractDatasetType
 
         $dql = '
         SELECT COUNT(DISTINCT t.resource)
-        FROM NumericDataTypes\Entity\NumericDataTypesTimestamp t
+        FROM EdtfDataType\Entity\EdtfDataTypeTimestamp t
         JOIN Omeka\Entity\Value v WITH v.resource = t.resource
         WHERE t.resource IN (:item_ids)
         AND t.property = :timestamp_property_id

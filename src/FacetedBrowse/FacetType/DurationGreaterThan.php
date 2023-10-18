@@ -1,13 +1,13 @@
 <?php
-namespace NumericDataTypes\FacetedBrowse\FacetType;
+namespace EdtfDataType\FacetedBrowse\FacetType;
 
 use FacetedBrowse\Api\Representation\FacetedBrowseFacetRepresentation;
 use FacetedBrowse\FacetType\FacetTypeInterface;
 use Laminas\Form\Element as LaminasElement;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use Laminas\View\Renderer\PhpRenderer;
-use NumericDataTypes\DataType\Duration;
-use NumericDataTypes\Form\Element\NumericPropertySelect;
+use EdtfDataType\DataType\Duration;
+use EdtfDataType\Form\Element\EdtfPropertySelect;
 
 class DurationGreaterThan implements FacetTypeInterface
 {
@@ -35,13 +35,13 @@ class DurationGreaterThan implements FacetTypeInterface
 
     public function prepareDataForm(PhpRenderer $view) : void
     {
-        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-data-form/duration-greater-than.js', 'NumericDataTypes'));
+        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-data-form/duration-greater-than.js', 'EdtfDataType'));
     }
 
     public function renderDataForm(PhpRenderer $view, array $data) : string
     {
         // Property ID
-        $propertyId = $this->formElements->get(NumericPropertySelect::class);
+        $propertyId = $this->formElements->get(EdtfPropertySelect::class);
         $propertyId->setName('property_id');
         $propertyId->setOptions([
             'label' => 'Property', // @translate
@@ -73,7 +73,7 @@ class DurationGreaterThan implements FacetTypeInterface
 
     public function prepareFacet(PhpRenderer $view) : void
     {
-        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-render/duration-greater-than.js', 'NumericDataTypes'));
+        $view->headScript()->appendFile($view->assetUrl('js/faceted-browse/facet-render/duration-greater-than.js', 'EdtfDataType'));
     }
 
     public function renderFacet(PhpRenderer $view, FacetedBrowseFacetRepresentation $facet) : string

@@ -1,5 +1,5 @@
 <?php
-namespace NumericDataTypes\DataType;
+namespace EdtfDataType\DataType;
 
 use Doctrine\ORM\QueryBuilder;
 use Laminas\View\Renderer\PhpRenderer;
@@ -11,7 +11,7 @@ abstract class AbstractDataType implements DataTypeWithOptionsInterface, DataTyp
 {
     public function getOptgroupLabel()
     {
-        return 'Numeric'; // @translate
+        return 'Edtf'; // @translate
     }
 
     public function prepareForm(PhpRenderer $view)
@@ -48,6 +48,7 @@ abstract class AbstractDataType implements DataTypeWithOptionsInterface, DataTyp
      */
     public function addLessThanQuery(AdapterInterface $adapter, QueryBuilder $qb, $propertyId, $number)
     {
+        # @todo - probably a bit to do here
         $alias = $adapter->createAlias();
         $with = $qb->expr()->eq("$alias.resource", 'omeka_root.id');
         if (is_numeric($propertyId)) {

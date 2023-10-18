@@ -1,10 +1,10 @@
 <?php
-use NumericDataTypes\Form\Element\Timestamp as TimestampElement;
-use NumericDataTypes\Form\Element\Duration as DurationElement;
-use NumericDataTypes\Form\Element\Integer as IntegerElement;
+use EdtfDataType\Form\Element\Timestamp as TimestampElement;
+use EdtfDataType\Form\Element\Duration as DurationElement;
+use EdtfDataType\Form\Element\Integer as IntegerElement;
 
-$this->headScript()->appendFile($this->assetUrl('js/numeric-data-types.js', 'NumericDataTypes'));
-$this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css', 'NumericDataTypes'));
+$this->headScript()->appendFile($this->assetUrl('js/numeric-data-types.js', 'EdtfDataType'));
+$this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css', 'EdtfDataType'));
 ?>
 
 <div class="field" id="numeric-timestamp-on-after">

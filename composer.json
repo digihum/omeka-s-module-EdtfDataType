@@ -1,0 +1,41 @@
+{
+    "name": "digihum/omeka-s-module-edtfdatatype",
+    "description": "EDTF Data Type (module for Omeka S)",
+    "type": "omeka-s-module",
+    "license": "CECILL-2.1",
+    "authors": [
+        {
+            "name": "Steve Ranford",
+            "email": "digitalhumanities@warwick.ac.uk"
+        }
+    ],
+    "homepage": "https://warwick.ac.uk/digitalhumanities",
+    "support": {
+        "issues": "https://github.com/digihum/omeka-s-module-edtfdatetime",
+        "forum": "https://forum.omeka.org/"
+    },
+    "keywords": [
+        "Omeka S",
+        "module",
+        "data type",
+        "date",
+        "time",
+        "edtf",
+        "datetime",
+        "numeric"
+    ],
+    "require": {
+        "php": ">=7.4",
+        "professional-wiki/edtf": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Log\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EdtfDataTypeTest\\": "test/EdtfDataTypeTest/"
+        }
+    }
+}
