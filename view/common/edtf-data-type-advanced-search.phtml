@@ -1,13 +1,11 @@
 <?php
-use EdtfDataType\Form\Element\Timestamp as TimestampElement;
-use EdtfDataType\Form\Element\Duration as DurationElement;
-use EdtfDataType\Form\Element\Integer as IntegerElement;
+use EdtfDataType\Form\Element\Edtf as EdtfElement;
 
-$this->headScript()->appendFile($this->assetUrl('js/numeric-data-types.js', 'EdtfDataType'));
-$this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css', 'EdtfDataType'));
+$this->headScript()->appendFile($this->assetUrl('js/edtf-data-types.js', 'EdtfDataType'));
+$this->headLink()->appendStylesheet($this->assetUrl('css/edtf-data-types.css', 'EdtfDataType'));
 ?>
 
-<div class="field" id="numeric-timestamp-on-after">
+<div class="field" id="edtf-on-after">
     <div class="field-meta">
         <label for=""><?php echo $this->translate('Date comes on or after'); ?></label>
     </div>
@@ -17,7 +15,7 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css'
             'name' => 'numeric[ts][gte][pid]',
             'attributes' => [
                 'aria-label' => $this->translate('Property'),
-                'id' => 'timestamp-on-after-pid',
+                'id' => 'edtf-on-after-pid',
                 'class' => 'chosen-select',
                 'value' => $query['numeric']['ts']['gte']['pid'] ?? null,
             ],
@@ -25,14 +23,14 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css'
                 'numeric_data_type' => 'timestamp',
             ],
         ]);
-        $element = new TimestampElement('numeric[ts][gte][val]');
+        $element = new EdtfElement('numeric[ts][gte][val]');
         $element->setValue($query['numeric']['ts']['gte']['val'] ?? null);
         echo $this->formElement($element);
         ?>
     </div>
 </div>
 
-<div class="field" id="numeric-timestamp-on-before">
+<div class="field" id="edtf-on-before">
     <div class="field-meta">
         <label for=""><?php echo $this->translate('Date comes on or before'); ?></label>
     </div>
@@ -42,7 +40,7 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css'
             'name' => 'numeric[ts][lte][pid]',
             'attributes' => [
                 'aria-label' => $this->translate('Property'),
-                'id' => 'timestamp-on-before-pid',
+                'id' => 'edtf-on-before-pid',
                 'class' => 'chosen-select',
                 'value' => $query['numeric']['ts']['lte']['pid'] ?? null,
             ],
@@ -50,13 +48,13 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css'
                 'numeric_data_type' => 'timestamp',
             ],
         ]);
-        $element = new TimestampElement('numeric[ts][lte][val]');
+        $element = new EdtfElement('numeric[ts][lte][val]');
         $element->setValue($query['numeric']['ts']['lte']['val'] ?? null);
         echo $this->formElement($element);
         ?>
     </div>
 </div>
-
+<!-- @todo work out whether any of these are valid for EDTF dates
 <div class="field" id="numeric-duration-gt">
     <div class="field-meta">
         <label for=""><?php echo $this->translate('Duration is greater than'); ?></label>
@@ -176,4 +174,4 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/numeric-data-types.css'
         echo $this->formElement($element);
         ?>
     </div>
-</div>
+</div> -->

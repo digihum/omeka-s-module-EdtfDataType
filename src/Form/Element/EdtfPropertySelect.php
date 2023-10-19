@@ -37,19 +37,10 @@ class EdtfPropertySelect extends Select
         $DataType = $this->getOption('edtf_data_type');
         $disambiguate = $this->getOption('numeric_data_type_disambiguate');
 
-        if (!is_array($DataType)) {
-            $DataType = [$DataType];
-        }
-        if (!$DataType) {
-            return [];
-        }
-
         // Users don't pass the full numeric data type names using the
         // numeric_data_type option, so set them here.
-        $numericDataType = [];
-        foreach ($DataType as $dataType) {
-            $numericDataType[sprintf('%s', $dataType)] = true;
-        }
+
+        $edtfDataType[$DataType] = true;
 
         $qb = $this->entityManager->createQueryBuilder();
         $qb->select('rtp')
@@ -61,7 +52,7 @@ class EdtfPropertySelect extends Select
             $property = $templateProperty->getProperty();
             $template = $templateProperty->getResourceTemplate();
             foreach ($templateProperty->getDataType() ?? [] as $dataType) {
-                if (!isset($numericDataType[$dataType])) {
+                if (!isset($edtfDataType[$dataType])) {
                     // This is not a requested numeric data type.
                     continue;
                 }

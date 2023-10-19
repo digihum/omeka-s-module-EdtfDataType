@@ -25,10 +25,10 @@ return [
     ],
     'data_types' => [
         'invokables' => [
-            'edtf' => EdtfDataType\DataType\Edtf::class,
+            'edtf:date' => EdtfDataType\DataType\Edtf::class,
         ],
         'value_annotating' => [
-            'edtf'
+            'edtf:date'
         ],
     ],
     'view_helpers' => [

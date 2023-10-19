@@ -1,5 +1,4 @@
 <?php
-
 namespace EdtfDataType\Entity;
 
 use Omeka\Entity\AbstractEntity;
@@ -15,7 +14,7 @@ use Omeka\Entity\Resource;
  *     }
  * )
  */
-class EdtfDataType extends AbstractEntity
+class EdtfDataTypeSuper extends AbstractEntity
 {
     /**
      * @Id
@@ -69,17 +68,5 @@ class EdtfDataType extends AbstractEntity
     public function getProperty()
     {
         return $this->property;
-    }
-
-    protected $value;
-
-    public function setValue($value)
-    {
-        $this->value = (int) $value;
-    }
-
-    public function getValue()
-    {
-        return $this->value;
     }
 }

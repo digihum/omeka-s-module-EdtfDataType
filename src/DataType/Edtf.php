@@ -2,7 +2,7 @@
 namespace EdtfDataType\DataType;
 
 use Doctrine\ORM\QueryBuilder;
-use EdtfDataType\Entity\EdtfDataType;
+use EdtfDataType\Entity\EdtfDataTypeEdtf;
 use EdtfDataType\Form\Element\Edtf as EdtfElement;
 use Omeka\Api\Adapter\AbstractEntityAdapter;
 use Omeka\Api\Adapter\AdapterInterface;
@@ -16,7 +16,7 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
 {
     public function getName()
     {
-        return 'edtf';
+        return 'edtf:date';
     }
 
     public function getLabel()
@@ -71,20 +71,20 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
         #print_r($this->getDateTimeFromValue($valueObject["@value"]));
         
         # Use the parsing library to validate the EDTF date.
-        $parser = \EDTF\EdtfFactory::newParser();
+        $parser = EdtfFactory::newParser();
         $parsingResult = $parser->parse($valueObject['@value']);
 
         if($parsingResult->isValid()!=1) {
-            return false;
+            return (bool) false;
         }
-        return true;
+        return (bool) true;
     }
 
     public function hydrate(array $valueObject, Value $value, AbstractEntityAdapter $adapter)
     {
-        // Store the datetime in ISO 8601, allowing for reduced accuracy.
-        $date = $this->getDateTimeFromValue($valueObject['@value']);
-        $value->setValue($date['date']->format($date['format_iso8601']));
+        // Store the datetime as a string
+        $edtfDate = $valueObject['@value'];
+        $value->setValue($edtfDate);
         $value->setLang(null);
         $value->setUri(null);
         $value->setValueResource(null);
@@ -106,13 +106,15 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
 
     public function getEntityClass()
     {
-        return 'EdtfDataType\Entity\EdtfDataType';
+        return 'EdtfDataType\Entity\EdtfDataTypeEdtf';
     }
 
-    public function setEntityValues(EdtfDataType $entity, Value $value)
+    public function setEntityValues(EdtfDataTypeEdtf $entity, Value $value)
     {
-        $date = $this->getDateTimeFromValue($value->getValue());
-        $entity->setValue($date['date']->getEdtf());
+      
+        // Set the datetime as a string
+        $edtfDate = $value->getValue();
+        $entity->setValue($edtfDate);
     }
 
     /**
@@ -129,8 +131,9 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
             $value = $query['numeric']['ts']['lt']['val'];
             $propertyId = $query['numeric']['ts']['lt']['pid'] ?? null;
             if ($this->isValid(['@value' => $value])) {
-                $date = $this->getDateTimeFromValue($value);
-                $number = $date['date']->getEdtf();
+                $edtfDate = $value;
+                # @todo get a number for less than
+                $number = $edtfDate;
                 $this->addLessThanQuery($adapter, $qb, $propertyId, $number);
             }
         }
@@ -138,8 +141,9 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
             $value = $query['numeric']['ts']['gt']['val'];
             $propertyId = $query['numeric']['ts']['gt']['pid'] ?? null;
             if ($this->isValid(['@value' => $value])) {
-                $date = $this->getDateTimeFromValue($value);
-                $number = $date['date']->getEdtf();
+                $edtfDate = $value;
+                # @todo get a number for greater than
+                $number = $edtfDate;
                 $this->addGreaterThanQuery($adapter, $qb, $propertyId, $number);
             }
         }
@@ -147,8 +151,9 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
             $value = $query['numeric']['ts']['lte']['val'];
             $propertyId = $query['numeric']['ts']['lte']['pid'] ?? null;
             if ($this->isValid(['@value' => $value])) {
-                $date = $this->getDateTimeFromValue($value);
-                $number = $date['date']->getEdtf();
+                $edtfDate = $value;
+                # @todo get a number for less or equal to
+                $number = $edtfDate;
                 $this->addLessThanOrEqualToQuery($adapter, $qb, $propertyId, $number);
             }
         }
@@ -156,8 +161,9 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
             $value = $query['numeric']['ts']['gte']['val'];
             $propertyId = $query['numeric']['ts']['gte']['pid'] ?? null;
             if ($this->isValid(['@value' => $value])) {
-                $date = $this->getDateTimeFromValue($value);
-                $number = $date['date']->getEdtf();
+                $edtfDate = $value;
+                # @todo get a number for greater than or equal to
+                $number = $edtfDate;
                 $this->addGreaterThanOrEqualToQuery($adapter, $qb, $propertyId, $number);
             }
         }

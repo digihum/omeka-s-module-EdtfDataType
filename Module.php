@@ -26,12 +26,10 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $services)
     {
         $conn = $services->get('Omeka\Connection');
-        $conn->exec('CREATE TABLE edtf_data_type (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value BIGINT NOT NULL, INDEX IDX_7367AFAA12345678 (resource_id), INDEX IDX_7367AFAA98765432 (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-
-        $conn->exec('ALTER TABLE edtf_data_type ADD CONSTRAINT FK_7367AFAA12345678 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;'); //new generated constraint
-        #$conn->exec('ALTER TABLE edtf_data_type_timestamp ADD CONSTRAINT FK_7367AFAA89329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE edtf_data_type ADD CONSTRAINT FK_7367AFAA98765432 FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
-        #$conn->exec('ALTER TABLE edtf_data_type_timestamp ADD CONSTRAINT FK_7367AFAA549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
+        $conn->exec('CREATE TABLE edtf_data_type_edtf (id INT AUTO_INCREMENT NOT NULL, resource_id INT NOT NULL, property_id INT NOT NULL, value VARCHAR(255) NOT NULL, INDEX IDX_C0EBD47889329D25 (resource_id), INDEX IDX_C0EBD478549213EC (property_id), INDEX property_value (property_id, value), INDEX value (value), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;');
+        $conn->exec('ALTER TABLE edtf_data_type_edtf ADD CONSTRAINT FK_C0EBD47889329D25 FOREIGN KEY (resource_id) REFERENCES resource (id) ON DELETE CASCADE;');
+        $conn->exec('ALTER TABLE edtf_data_type_edtf ADD CONSTRAINT FK_C0EBD478549213EC FOREIGN KEY (property_id) REFERENCES property (id) ON DELETE CASCADE;');
+    
     }
 
     public function uninstall(ServiceLocatorInterface $services)
@@ -97,7 +95,7 @@ class Module extends AbstractModule
             function (Event $event) {
                 $form = $event->getTarget();
                 $form->add([
-                    'type' => ConvertToEttf::class,
+                    'type' => ConvertToEdtf::class,
                     'name' => 'edtf_convert',
                 ]);
             }
@@ -223,7 +221,7 @@ class Module extends AbstractModule
                     'SELECT n FROM %s n WHERE n.resource = :resource',
                     $dataType->getEntityClass()
                 );
-                echo($dql);
+                #echo($dql);
                 $query = $em->createQuery($dql);
                 $query->setParameter('resource', $entity);
                 $existingNumbers = $query->getResult();
@@ -351,7 +349,7 @@ class Module extends AbstractModule
 
         $dataType = $this->getServiceLocator()->get('Omeka\DataTypeManager');
         $edtfDataType = [];
-        $edtfDataType["edtf"] = $dataType->get("edtf");
+        $edtfDataType["edtf:date"] = $dataType->get("edtf:date");
         
         return $edtfDataType;
     }

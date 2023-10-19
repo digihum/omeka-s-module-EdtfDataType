@@ -16,7 +16,7 @@ class FormElementDelegatorFactory implements DelegatorFactoryInterface
         );
         $formElement->addClass(
             \EdtfDataType\Form\Element\ConvertToEdtf::class,
-            'formEdtfConvertToEdtf'
+            'formConvertToEdtf'
         );
         return $formElement;
     }
