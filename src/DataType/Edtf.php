@@ -67,14 +67,11 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
 
     public function isValid(array $valueObject)
     {
-        #echo("is this working? ");
-        #print_r($this->getDateTimeFromValue($valueObject["@value"]));
-        
-        # Use the parsing library to validate the EDTF date.
+        # @todo for some reason even if this is invalid, it saves.
         $parser = EdtfFactory::newParser();
         $parsingResult = $parser->parse($valueObject['@value']);
 
-        if($parsingResult->isValid()!=1) {
+        if(!$parsingResult->isValid()) {
             return (bool) false;
         }
         return (bool) true;
@@ -95,12 +92,19 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
         if (!$this->isValid(['@value' => $value->value()])) {
             return $value->value();
         }
-        $options['lang'] ??= $view->lang();
-        return $this->getFormattedDateTimeFromValue($value->value(), $options);
+
+        $humanizer = EdtfFactory::newHumanizerForLanguage(
+            $view->lang() ?? 'en',
+        );
+        return $humanizer->humanize(
+            $this->toEdtf($value)->getEdtfValue()
+        );
+
     }
 
     public function getFulltextText(PhpRenderer $view, ValueRepresentation $value)
     {
+
         return sprintf('%s %s', $value->value(), $this->render($view, $value));
     }
 
