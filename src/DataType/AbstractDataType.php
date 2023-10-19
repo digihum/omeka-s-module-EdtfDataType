@@ -6,6 +6,7 @@ use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Adapter\AdapterInterface;
 use Omeka\DataType\DataTypeWithOptionsInterface;
 use Omeka\Api\Representation\ValueRepresentation;
+use \EDTF\EdtfFactory;
 
 abstract class AbstractDataType implements DataTypeWithOptionsInterface, DataTypeInterface
 {
@@ -20,7 +21,15 @@ abstract class AbstractDataType implements DataTypeWithOptionsInterface, DataTyp
 
     public function toString(ValueRepresentation $value)
     {
+
         return (string) $value->value();
+    }
+
+    public function toEdtf(ValueRepresentation $value)
+    {
+        $parser = EdtfFactory::newParser();
+        $parsingResult = $parser->parse($value->value());
+        return $parsingResult;
     }
 
     public function getFulltextText(PhpRenderer $view, ValueRepresentation $value)
