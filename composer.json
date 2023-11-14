@@ -30,12 +30,16 @@
     },
     "autoload": {
         "psr-4": {
-            "Log\\": "src/"
+            "EdtfDataType\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "EdtfDataTypeTest\\": "test/EdtfDataTypeTest/"
         }
+    },
+    "require-dev": {
+        "biblibre/omeka-s-test-helper": "dev-master",
+        "phpunit/phpunit": "9.5"
     }
 }

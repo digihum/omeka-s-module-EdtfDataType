@@ -24,33 +24,40 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
         return 'EDTF Date/Time'; // @translate
     }
 
+    public function prepareForm(PhpRenderer $view)
+    {
+        echo("prepareForm");
+    }
+
     public function getJsonLd(ValueRepresentation $value)
     {
-        # @todo this is relevant work that needs to be done for EDTF
         if (!$this->isValid(['@value' => $value->value()])) {
             return ['@value' => $value->value()];
         }
-        $date = $this->getDateTimeFromValue($value->value());
-        $type = null;
-        if (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute']) && isset($date['second']) && isset($date['offset_value'])) {
-            $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
-        } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute']) && isset($date['offset_value'])) {
-            $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
-        } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['offset_value'])) {
-            $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
-        } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute']) && isset($date['second'])) {
-            $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
-        } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute'])) {
-            $type = null; // XSD has no datatype for truncated seconds
-        } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour'])) {
-            $type = null; // XSD has no datatype for truncated minutes/seconds
-        } elseif (isset($date['month']) && isset($date['day'])) {
-            $type = 'http://www.w3.org/2001/XMLSchema#date';
-        } elseif (isset($date['month'])) {
-            $type = 'http://www.w3.org/2001/XMLSchema#gYearMonth';
-        } else {
-            $type = 'http://www.w3.org/2001/XMLSchema#gYear';
-        }
+        $date = $this->toEdtf($value);
+        $type = "xsd:string";
+        # @todo this could be made much more specific using
+        # all of the qualitifications of https://github.com/ProfessionalWiki/EDTF
+        # a bit of relevant discussion here: https://github.com/Islandora/documentation/issues/916 
+        // if (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute']) && isset($date['second']) && isset($date['offset_value'])) {
+        //     $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
+        // } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute']) && isset($date['offset_value'])) {
+        //     $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
+        // } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['offset_value'])) {
+        //     $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
+        // } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute']) && isset($date['second'])) {
+        //     $type = 'http://www.w3.org/2001/XMLSchema#dateTime';
+        // } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour']) && isset($date['minute'])) {
+        //     $type = null; // XSD has no datatype for truncated seconds
+        // } elseif (isset($date['month']) && isset($date['day']) && isset($date['hour'])) {
+        //     $type = null; // XSD has no datatype for truncated minutes/seconds
+        // } elseif (isset($date['month']) && isset($date['day'])) {
+        //     $type = 'http://www.w3.org/2001/XMLSchema#date';
+        // } elseif (isset($date['month'])) {
+        //     $type = 'http://www.w3.org/2001/XMLSchema#gYearMonth';
+        // } else {
+        //     $type = 'http://www.w3.org/2001/XMLSchema#gYear';
+        // }
         $jsonLd = ['@value' => $value->value()];
         if ($type) {
             $jsonLd['@type'] = $type;
@@ -64,6 +71,14 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
         $element->getValueElement()->setAttribute('data-value-key', '@value');
         return $view->formElement($element);
     }
+
+    public function toEdtf(ValueRepresentation $value)
+    {
+        $parser = EdtfFactory::newParser();
+        $parsingResult = $parser->parse($value->value());
+        return $parsingResult;
+    }
+
 
     public function isValid(array $valueObject)
     {

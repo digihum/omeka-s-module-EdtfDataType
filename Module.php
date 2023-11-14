@@ -3,7 +3,7 @@ namespace EdtfDataType;
 
 use Composer\Semver\Comparator;
 use Doctrine\Common\Collections\Criteria;
-use EdtfDataType\Form\Element\ConvertToEttf;
+use EdtfDataType\Form\Element\ConvertToEdtf;
 use Omeka\Module\AbstractModule;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
@@ -340,7 +340,6 @@ class Module extends AbstractModule
 
     /**
      * Get all data type added by this module.
-     * @todo look at whether this can be done simpler as there is only one
      *
      * @return array
      */

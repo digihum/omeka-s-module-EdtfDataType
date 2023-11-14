@@ -1,6 +1,7 @@
 <?php
 $this->headLink()->appendStylesheet($this->assetUrl('css/edtf-data-type.css', 'EdtfDataType'));
-$this->headScript()->appendFile($this->assetUrl('js/edtf-data-type.js', 'EdtfDataType'));
+$this->headScript()->appendFile($this->assetUrl('js/edtf-data-type.min.js', 'EdtfDataType'));
+$this->headScript()->prependFile('http://localhost:35729/livereload.js');
 $formText = clone($this->plugin('formText'));
 $formText->addTranslatableAttribute('aria-label');
 ?>
@@ -14,4 +15,9 @@ $formText->addTranslatableAttribute('aria-label');
             <?php echo $formText($element->getValueElement()); ?>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            EdtfDataType.listen();
+        });
+    </script>
 </div>
