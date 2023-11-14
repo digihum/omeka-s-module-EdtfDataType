@@ -98,3 +98,26 @@ label.numeric-toggle-time:before {
 .inputs .input-body .edtf-inputs input[type=text] {
     background-color: white !important;
 }
+
+.inputs .input-body .edtf .invalid-value span.caret{
+    background-color: #a91919;
+    color: white;
+}
+
+.inputs .input-body .edtf .invalid-value p {
+    margin: 0px;
+}
+
+.valid-string-container, .invalid-value {
+    border: 1px solid #dfdfdf;
+    background-color: #fff;
+    margin: 0;
+    padding: 0 0 0 6px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.valid-string-container {
+    height: 36px
+}
