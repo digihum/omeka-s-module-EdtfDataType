@@ -41,5 +41,8 @@
     "require-dev": {
         "biblibre/omeka-s-test-helper": "dev-master",
         "phpunit/phpunit": "9.5"
+    },
+    "extra": {
+        "installer-name": "EdtfDataType"
     }
 }
