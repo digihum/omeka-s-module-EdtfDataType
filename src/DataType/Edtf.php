@@ -26,7 +26,6 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
 
     public function prepareForm(PhpRenderer $view)
     {
-        echo("prepareForm");
     }
 
     public function getJsonLd(ValueRepresentation $value)
@@ -111,9 +110,16 @@ class Edtf extends AbstractDateTimeDataType implements ValueAnnotatingInterface
         $humanizer = EdtfFactory::newHumanizerForLanguage(
             $view->lang() ?? 'en',
         );
-        return $humanizer->humanize(
+        $response = $humanizer->humanize(
             $this->toEdtf($value)->getEdtfValue()
         );
+
+        //handles valid dates that do not return a humanized value
+        if ($response == "") {
+            return $value;
+        } else {
+            return $response;
+        }
 
     }
 
