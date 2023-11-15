@@ -6,7 +6,7 @@ import $ from 'jquery';
 // add listener to the #edtf-value input for changes
 
 const parser = function(container) {
-    console.log("fired");
+
     var outputString = ""
     var shortExplanation = "";
     var caretLocation, caretOffset = 0;
@@ -51,7 +51,7 @@ const parser = function(container) {
                     caretLocation = line.indexOf("^") - caretOffset;
                     break                         
                 default:
-                    console.log("-- " + line + "\n");
+                    //console.log("-- " + line + "\n");
                     break
             }
         })
@@ -72,32 +72,35 @@ const parser = function(container) {
     }
 }
 
+const addParserEventListener = function(container) {
+
+    // take the first container in the array
+    $(container)[0].addEventListener('input', function(e)
+    {   
+        parser(e.target)
+    });
+
+}
 
 const listen = function() {
-    //needs to hook into the button that add's new fields as only the first one activates...
-    
+    // setup for future new instances
+    $(document).on('o:prepare-value o:prepare-value-annotation', function(e, type, container) {
+        if ('edtf:date' === type) {
+            var input = container.find('.edtf-value');
+            addParserEventListener(container);
+        }
+    });
+
     var inputs = document.querySelectorAll('.edtf input.edtf-value');
-    console.log("firing")
-    console.log(input)
+
     
     inputs.forEach(input => {
         parser(input)
-        input.addEventListener('input', function(e)
-        {   
-            parser(e.target)
-        });
-
+        addParserEventListener(input)
     });
 
-    $(document).on('o:prepare-value o:prepare-value-annotation', function(e, type, value) {
-        if ('edtf:date' === type) {
-            console.log("new value to work with")
-        }
-    });
 }
 
-
-
-
 export { 
-    listen };
+    listen 
+};

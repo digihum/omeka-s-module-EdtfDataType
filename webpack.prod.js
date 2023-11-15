@@ -1,10 +1,11 @@
 const path = require('path');
-var LiveReloadPlugin = require('webpack-livereload-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = {
   entry: './asset/src/js/index.js',
   target: 'web',
-  mode: 'development',
+  mode: 'production',
+  devtool: 'source-map',
   output: {
     library:'EdtfDataType',
     filename: 'edtf-data-type.min.js',
@@ -17,11 +18,12 @@ module.exports = {
   externals: {
     jquery: 'jQuery',
   },
-  plugins: [
-    new LiveReloadPlugin({
-      protocol: "http"
-    })
-  ]
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({
+    }
+    )],
+  },
 };
 module.loaders = { 
   test: /\.js$/, 

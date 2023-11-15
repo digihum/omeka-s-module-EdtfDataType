@@ -1,7 +1,19 @@
 <?php
 $this->headLink()->appendStylesheet($this->assetUrl('css/edtf-data-type.css', 'EdtfDataType'));
-$this->headScript()->appendFile($this->assetUrl('js/edtf-data-type.min.js', 'EdtfDataType'));
-$this->headScript()->prependFile('http://localhost:35729/livereload.js');
+
+if (getenv('APPLICATION_ENV') === 'development') {
+
+    $url = 'http://localhost:8081/edtf-data-type.min.js'; 
+
+    if(!$fp = curl_init($url)) {
+        $this->headScript()->appendFile($url);
+        $this->headScript()->appendFile('http://localhost:35729/livereload.js');
+    } else { 
+        $this->headScript()->appendFile($this->assetUrl('js/edtf-data-type.js', 'EdtfDataType'));
+     }
+} else {
+    $this->headScript()->appendFile($this->assetUrl('js/edtf-data-type.min.js', 'EdtfDataType'));
+}
 $formText = clone($this->plugin('formText'));
 $formText->addTranslatableAttribute('aria-label');
 ?>

@@ -22,8 +22,9 @@
     "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
-    "build": "webpack",
-    "watch": "webpack-dev-server --hot --progress"
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack --config webpack.dev.js",
+    "watch": "webpack-dev-server --hot --progress --config webpack.dev.js"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
