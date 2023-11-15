@@ -1,6 +1,6 @@
 {
   "name": "omeka-s-module-edtfdatatype",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "This module supports the Extended Date Time Format.",
   "main": "asset/src/js/index.js",
   "repository": {
